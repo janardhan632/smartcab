@@ -36,7 +36,7 @@ class LearningAgent(Agent):
             self.epsilon = 0
             self.alpha = 0
         else:
-            self.epsilon = self.epsilon - 0.01
+            self.epsilon = self.epsilon - 0.005
         ########### 
         ## TO DO ##
         ###########
@@ -66,22 +66,9 @@ class LearningAgent(Agent):
         # With the hand-engineered features, this learning process gets entirely negated.
         
         # Set 'state' as a tuple of relevant data for the agent  
-        if(inputs['oncoming']=='left'):
-            state_oncoming = 'left'
-        else:
-            state_oncoming = None
-        if(inputs['left']=='forward'):
-            state_left = 'forward'
-        else:
-            state_left = None    
-        if(inputs['right']=='forward'):
-            state_right = 'forward'
-        elif(inputs['right']=='left'):
-            state_right = 'left'
-        else:
-            state_right = None
+        
             
-        state = (waypoint, inputs['light'],state_oncoming,state_left,state_right)
+        state = (waypoint, inputs['light'],inputs['oncoming'],inputs['left'])
 
         return state
 
@@ -95,7 +82,7 @@ class LearningAgent(Agent):
         ###########
         # Calculate the maximum Q-value of all actions for a given state
 
-        maxQ = 0.0
+        maxQ = -1000
         maxQ_actions = []
         for i in self.Q[state].keys():
             if(self.Q[state][i] >= maxQ):
